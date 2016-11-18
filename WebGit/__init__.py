@@ -17,7 +17,7 @@ from config import basedir
 lm = LoginManager()
 lm.init_app(app)
 lm.login_view='login'
-
+lm.login_message = 'Please log in to access this page.'
 
 
 from WebGit import views, models
