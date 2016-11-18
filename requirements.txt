@@ -9,11 +9,13 @@ itsdangerous==0.24
 Jinja2==2.8
 MarkupSafe==0.23
 pbr==1.10.0
+psycopg2==2.6.2
 python-openid==2.2.5
 six==1.10.0
 SQLAlchemy==1.1.4
 sqlalchemy-migrate==0.10.0
 sqlparse==0.2.2
 Tempita==0.5.2
+virtualenv==15.1.0
 Werkzeug==0.11.11
 WTForms==2.1
