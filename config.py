@@ -5,6 +5,7 @@ CSRF_ENABLED = True
 SECRET_KEY = 'this-is-a-very-very-strong-key-123'
 
 
+SQLALCHEMY_TRACK_MODIFICATIONS=True
 
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))

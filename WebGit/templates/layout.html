@@ -13,6 +13,10 @@
     {{ user.nickname}}
     {% endif %}
     <a href="/index">Home</a>
+    {% if not user %}
+    <a href="/login">Login</a>
+    <a href="/register">Registration</a>
+    {% endif %}
     {% if user %}
     <a href="/logout">Logout</a>
     {% endif %}

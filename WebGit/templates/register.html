@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% extends "layout.html" %}
+
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+{% from "_formhelper.html" import render_field %}
+<form method=post action="/register">
+    {{form.hidden_tag()}}
+  <dl>
+    {{ render_field(form.username) }}
+    {{ render_field(form.email) }}
+    {{ render_field(form.password) }}
+    {{ render_field(form.confirm) }}
+    {{ render_field(form.accept_tos) }}
+  </dl>
+  <p><input type=submit value=Register>
+</form>
+
+</body>
+</html>
+
+{% endblock %}

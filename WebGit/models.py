@@ -1,7 +1,7 @@
 from WebGit import db
 from flask_login.mixins import UserMixin
 from WebGit.password_hash import *
-
+import re
 ROLE_USER = 0
 ROLE_ADMIN = 1
 
@@ -19,7 +19,19 @@ class User(db.Model, UserMixin):
     role = db.Column(db.SmallInteger, default = ROLE_USER)
     is_active = db.Column(db.SmallInteger, default = NOT_ACTIVE)
     repos = db.relationship('Repo', backref = 'owner', lazy = 'dynamic')
-    
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return unicode(self.id)
+
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')
@@ -31,8 +43,24 @@ class User(db.Model, UserMixin):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    @staticmethod
+    def make_valid_nickname(nickname):
+        return re.sub('[^a-zA-Z0-9_\.]', '', nickname)
+
+    @staticmethod
+    def make_unique_nickname(nickname):
+        if User.query.filter_by(nickname=nickname).first() == None:
+            return nickname
+        version = 2
+        while True:
+            new_nickname = nickname + str(version)
+            if User.query.filter_by(nickname=new_nickname).first() == None:
+                break
+            version += 1
+        return new_nickname
+
     def __repr__(self):
-        return '<User %r>' % (self.nickname)
+        return '<User %r>' % self.nickname
 
 
 class Repo(db.Model):
@@ -44,3 +72,4 @@ class Repo(db.Model):
 
     def __repr__(self):
         return '<Post %r>' % (self.body)
+

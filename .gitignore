@@ -3,5 +3,6 @@ env/
 *.pyo
 app.db
 search.db
+test.db
 *.mo
 .idea/
