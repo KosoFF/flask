@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    {% if title %}
+    <title>{{title}}</title>
+    {% else %}
+    <title> Something strange</title>
+    {% endif %}
+</head>
+<body>
+    <div> WebApp: 
+    {% if user %}
+    {{ user.nickname}}
+    {% endif %}
+    <a href="/index">Home</a>
+    {% if user %}
+    <a href="/logout">Logout</a>
+    {% endif %}
+    </div>    
+    <hr>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }} </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</body>
+</html>
