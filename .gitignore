@@ -1,8 +1,15 @@
-env/ 
+env/
+
 *.pyc
+
 *.pyo
+
 app.db
+
 search.db
+
 test.db
+
 *.mo
+
 .idea/
