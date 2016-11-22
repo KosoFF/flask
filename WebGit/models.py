@@ -71,5 +71,5 @@ class Repo(db.Model):
     comment = db.Column(db.String(255));
 
     def __repr__(self):
-        return '<Post %r>' % (self.body)
+        return '<Repository %r>' % self.url
 

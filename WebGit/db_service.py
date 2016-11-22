@@ -2,7 +2,8 @@ from flask import render_template, flash, redirect, session, url_for, request, g
 from flask_login import login_user, logout_user, current_user, login_required
 from WebGit import app, db, lm
 from forms import LoginForm
-from models import User, ROLE_USER, ROLE_ADMIN
+from models import User, ROLE_USER, ROLE_ADMIN, Repo
+import datetime
 
 
 def try_login(email, password):
@@ -10,7 +11,7 @@ def try_login(email, password):
     if user is None: 
         flash('Invalid email. Please, try again.')
         return redirect(url_for('login'))   
-    if not user.verify_password(password):    #Here must be hash
+    if not user.verify_password(password):
         flash('Invalid password. Please, try again')
         return redirect(url_for('login'))   
     remember_me = False
@@ -35,3 +36,9 @@ def add_user(nickname, email, password):
     db.session.commit()
     return redirect(url_for('login'))
 
+
+def add_repository (url, comment, user_id):
+    repo = Repo(url=url, timestamp = datetime.datetime.now(), user_id=user_id, comment=comment)
+    db.session.add(repo)
+    db.session.commit()
+    return repo

@@ -2,8 +2,81 @@
 
 {% extends "layout.html" %}
 {% block content %}
-<h1>Hi, {{user.nickname}}!</h1>
-{% for post in posts %}
-<div><p>{{post.author.nickname}} says: <b>{{post.body}}</b></p></div>
+    <head>
+    <meta charset="UTF-8">
+
+</head>
+<body>
+
+<div class="container">
+    {% from "_formhelper.html" import render_field %}
+    <form method=post action="">
+        {{form.hidden_tag()}}
+        {{ render_field(form.url) }}
+        {{ render_field(form.comment) }}
+    <input type="button" value=Add onclick="validate_url()">
+        <output id="validation_result"></output>
+
+    </form>
+
+</div>
+
+</body>
+
+
+<script>
+function validate_url() {
+
+  var xhr = new XMLHttpRequest();
+
+
+    var url = document.getElementById('input_url').value;
+    var comment = document.getElementById('input_comment').value;
+    var t = url.split('/');
+    var repo=t.pop();
+    var owner = t.pop();
+    xhr.open('GET', 'https://api.github.com/repos/' + owner + '/' + repo, false);
+    xhr.send(null);
+    if (xhr.readyState == 4 && xhr.status == 200 && JSON.parse(xhr.responseText).id != null) {
+            document.getElementById('validation_result').innerHTML = "Repository was found";
+            document.getElementById('validation_result').style.color="green";
+        var pReq = new XMLHttpRequest();
+
+
+        var body = JSON.stringify({"url": url,"comment": comment});
+
+        pReq.open("POST", '/add_repository', true);
+        pReq.setRequestHeader('Content-Type', 'application/json');
+        pReq.send(body);
+          pReq.onreadystatechange = function() { // Ждём ответа от сервера
+
+              if (pReq.readyState == 4) { // Ответ пришёл
+                if(pReq.status == 201) {
+                document.getElementById('validation_result').innerHTML = "Repository was added";
+                document.getElementById('validation_result').style.color="green"; // Выводим ответ сервера
+                    return
+        }
+      }
+      document.getElementById('validation_result').innerHTML = "Something went wrong";
+                document.getElementById('validation_result').style.color="yellow";
+    };
+
+    }
+    else
+    {
+        document.getElementById('validation_result').innerHTML = "Could not find repository";
+        document.getElementById('validation_result').style.color = "red";
+    }
+
+}
+</script>
+
+{% for repo in repos %}
+    <div>
+    <div><p>{{repo.user_name}}  <b>{{repo.timestamp}}</b></p></div>
+    <p><b>{{repo.url}}</b></p>
+    <p><b>{{repo.comment}}</b></p>
+    <hr>
+    </div>
 {% endfor %}
 {% endblock %}

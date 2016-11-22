@@ -10,6 +10,7 @@
     <title>Registration</title>
 </head>
 <body>
+<div class="container"></div>
 {% from "_formhelper.html" import render_field %}
 <form method=post action="/register">
     {{form.hidden_tag()}}
@@ -22,6 +23,7 @@
   </dl>
   <p><input type=submit value=Register>
 </form>
+</div>
 
 </body>
 </html>
